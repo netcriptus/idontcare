@@ -1,0 +1,23 @@
+{
+  "manifest_version": 2,
+
+  "name": "I don't care button for Facebook",
+  "description": "This extension shows the so acclaimed button 'I don't care' in Facebook posts",
+  "version": "1.0",
+
+  "options_page": "options.html",
+  
+  "permissions": [
+      "tabs"
+    ],
+    
+  "web_accessible_resources": ["idc.js", "js/jquery.min.map"],
+  
+  "content_scripts": [
+          {
+              "matches": ["*://*.facebook.com/*"],
+              "js": ["idc.js"],
+              "run_at": "document_end"
+          }
+      ]
+}
