@@ -58,17 +58,26 @@ function dontCareButton(){
 }
 
 function getMyId(){
-    my_id_box = document.getElementsByClassName('fbxWelcomeBoxName')[0]
-    my_url = document.createElement('a')
-    my_url.href = my_id_box.href
-    return my_url.pathname
+    my_id_box = document.getElementsByClassName('fbxWelcomeBoxName')[0];
+    my_url = document.createElement('a');
+    my_url.href = my_id_box.href;
+    return my_url.pathname;
 }
 
-my_id = getMyId()
 
-DONT_CARE_MESSAGE = "I don't care"
-CARE_MESSAGE = "Nevermind, I do care"
 
-// Facebook loads posts assyncronously
-// I currently don't know how to get rid of this loop
-window.setInterval(dontCareButton(), 2000)
+my_id = getMyId();
+DONT_CARE_MESSAGE = "I don't care";
+CARE_MESSAGE = "Nevermind, I do care";
+
+dontCareButton();
+
+stream = document.getElementsByClassName('_5pcb')[0];
+
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    dontCareButton();
+  });    
+});
+
+observer.observe(stream, {childList: true});
