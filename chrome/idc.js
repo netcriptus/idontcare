@@ -1,7 +1,17 @@
-function fetchPost(post){
-    // This should retrieve a list with people who don't care for a given post
-    // The return value should always be a list
-    return [];
+function httpGet(theUrl)
+{
+    var xmlHttp = null;
+
+    xmlHttp = new XMLHttpRequest();
+    xmlHttp.open( "GET", theUrl, false );
+    xmlHttp.send( null );
+    return xmlHttp.responseText;
+}
+
+function fetchPost(post_id){
+    response = httpGet(DB_URL + "get/" + post_id);
+    response = JSON.parse(response)
+    return response
 }
 
 function getReferPost(button){
@@ -10,19 +20,21 @@ function getReferPost(button){
     while(refer_post.className.indexOf("userContentWrapper") == -1){
         refer_post = refer_post.parentElement;
     }
+    refer_post = JSON.parse(refer_post.getAttribute('data-gt'))['fbstory'];
     return refer_post;
 }
 
 function Care(){
     refer_post = getReferPost(this)
-    post_id = JSON.parse(refer_post.getAttribute('data-gt'))['fbstory'];
     
     if (this.text == DONT_CARE_MESSAGE) {
         this.text = CARE_MESSAGE;
+        httpGet(DB_URL+"put/"+refer_post+my_id);
     } else {
+        httpDelete(DB_URL+refer_post+my_id);
         this.text = DONT_CARE_MESSAGE;
+        httpGet(DB_URL+"delete/"+refer_post+my_id);
     }
-    // This data should be sent to the database (post_id + user_id)
     event.preventDefault();
 }
 
@@ -61,7 +73,7 @@ function getMyId(){
     my_id_box = document.getElementsByClassName('fbxWelcomeBoxName')[0];
     my_url = document.createElement('a');
     my_url.href = my_id_box.href;
-    return my_url.pathname;
+    return my_url.pathname.substr(1);
 }
 
 
@@ -69,6 +81,7 @@ function getMyId(){
 my_id = getMyId();
 DONT_CARE_MESSAGE = "I don't care";
 CARE_MESSAGE = "Nevermind, I do care";
+DB_URL = "https://idc-button-for-facebook.herokuapp.com/posts/"
 
 dontCareButton();
 
