@@ -72,12 +72,13 @@ CARE_MESSAGE = "Nevermind, I do care";
 
 dontCareButton();
 
-stream = document.getElementsByClassName('_5pcb')[0];
+main_page = document.body;
 
-var observer = new MutationObserver(function(mutations) {
+var main_page_observer = new MutationObserver(function(mutations) {
   mutations.forEach(function(mutation) {
-    dontCareButton();
+      dontCareButton();
   });    
 });
 
-observer.observe(stream, {childList: true});
+var config = { attributes: true, childList: true, characterData: true };
+main_page_observer.observe(main_page, config);
